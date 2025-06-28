@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>homepage</title>
+	</head>
+	<body>
+		<h1>categories</h1>
+		<ul>
+			<% tables.forEach((table, index) => { %>
+			<li>
+				<a href="/<%=table.table_name%>" id="table-text-<%= index %>"
+					><%= table.table_name %></a
+				>
+				<div id="edit-form-<%= index %>" style="display: none">
+					<form
+						action="/<%= table.table_name %>/update"
+						method="post"
+						style="display: inline"
+					>
+						<input
+							type="text"
+							name="updated-table"
+							value="<%= table.table_name %>"
+						/>
+						<button type="submit">submit</button>
+					</form>
+				</div>
+				<button onclick="toggleEdit(<%= index %>)" type="button">edit</button>
+				<form
+					action="/<%= table.table_name %>/delete"
+					method="post"
+					style="display: inline"
+				>
+					<button>delete</button>
+				</form>
+			</li>
+			<% }) %>
+		</ul>
+		<form action="/" method="post">
+			<label for="add-table">add table</label>
+			<input type="text" id="add-table" name="add-table" />
+			<button>submit</button>
+		</form>
+
+		<script>
+			function toggleEdit(index) {
+				const textElement = document.getElementById("table-text-" + index)
+				const editForm = document.getElementById("edit-form-" + index)
+
+				if (textElement.style.display === "none") {
+					// Cancel edit - show text, hide form
+					textElement.style.display = ""
+					editForm.style.display = "none"
+				} else {
+					// Start edit - hide text, show form
+					textElement.style.display = "none"
+					editForm.style.display = ""
+					// Focus on the input field
+					const input = editForm.querySelector('input[name="updated-table"]')
+					input.focus()
+					input.select()
+				}
+			}
+		</script>
+	</body>
+</html>
